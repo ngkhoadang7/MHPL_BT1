@@ -1,0 +1,10 @@
+C:\Users\User\source\repos\Todolist\BLL\bin\Debug\BLL.dll
+C:\Users\User\source\repos\Todolist\BLL\bin\Debug\BLL.pdb
+C:\Users\User\source\repos\Todolist\BLL\bin\Debug\BO.dll
+C:\Users\User\source\repos\Todolist\BLL\bin\Debug\DAL.dll
+C:\Users\User\source\repos\Todolist\BLL\bin\Debug\BO.pdb
+C:\Users\User\source\repos\Todolist\BLL\bin\Debug\DAL.pdb
+C:\Users\User\source\repos\Todolist\BLL\obj\Debug\BLL.csprojAssemblyReference.cache
+C:\Users\User\source\repos\Todolist\BLL\obj\Debug\BLL.csproj.CopyComplete
+C:\Users\User\source\repos\Todolist\BLL\obj\Debug\BLL.dll
+C:\Users\User\source\repos\Todolist\BLL\obj\Debug\BLL.pdb
