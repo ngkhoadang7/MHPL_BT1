@@ -42,6 +42,15 @@ namespace Todolist
         protected global::AjaxControlToolkit.ModalPopupExtender mpePopUp;
 
         /// <summary>
+        /// btnX control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnX;
+
+        /// <summary>
         /// DetailsView1 control.
         /// </summary>
         /// <remarks>
@@ -51,15 +60,6 @@ namespace Todolist
         protected global::System.Web.UI.WebControls.DetailsView DetailsView1;
 
         /// <summary>
-        /// btnCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancel;
-
-        /// <summary>
         /// btnOk control.
         /// </summary>
         /// <remarks>
@@ -67,6 +67,15 @@ namespace Todolist
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnOk;
+
+        /// <summary>
+        /// btnCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancel;
 
         /// <summary>
         /// GridView1 control.

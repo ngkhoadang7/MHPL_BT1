@@ -10,10 +10,17 @@ namespace BLL
 {
     public class JobBLL
     {
-        public List<Job> getAllJob() 
+        public List<Job> getAllJob()
         {
             List<Job> data = JobDAL.getAllJob();
             return data;
         }
+
+        public Job getJob(int id)
+        {
+            Job data = JobDAL.getJob(id);
+            return data;
+        }
+
     }
 }

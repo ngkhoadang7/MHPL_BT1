@@ -60,5 +60,53 @@ namespace DAL
             }
             return data;
         }
+
+        public static Job getJob(int id)
+        {
+            SqlConnection cnn;
+            SqlCommand cmd;
+            string sql = null;
+            SqlDataReader reader;
+            Job data = new Job();
+
+            cnn = DAL.connectDB();
+            if (cnn.State == ConnectionState.Open)
+            {
+                cnn.Close();
+            }
+
+            sql = "SELECT * FROM jobs WHERE id = "+ id.ToString();
+
+            try
+            {
+                cnn.Open();
+                cmd = new SqlCommand(sql, cnn);
+                reader = cmd.ExecuteReader();
+                while (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        data.id = reader.GetInt32(0);
+                        data.user_id = reader.GetInt32(1);
+                        data.title = reader.GetString(2);
+                        data.startDate = reader.GetDateTime(3);
+                        data.finishDate = reader.GetDateTime(4);
+                        data.status = reader.GetInt32(5);
+                        data.coworker = reader.IsDBNull(reader.GetOrdinal("coworker")) ? null : reader.GetString(6);
+                        data.privacy = reader.GetInt32(7);
+                        data.attach = reader.IsDBNull(reader.GetOrdinal("attach")) ? null : reader.GetString(8);
+                    }
+                    reader.NextResult();
+                }
+                reader.Close();
+                cmd.Dispose();
+                cnn.Close();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Can not open connection!");
+            }
+            return data;
+        }
     }
 }
