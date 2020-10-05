@@ -13,3 +13,11 @@ C:\Users\User\source\repos\MHPL_BT1\Todolist\DAL\bin\Debug\BO.pdb
 C:\Users\User\source\repos\MHPL_BT1\Todolist\DAL\obj\Debug\DAL.csproj.CopyComplete
 C:\Users\User\source\repos\MHPL_BT1\Todolist\DAL\obj\Debug\DAL.dll
 C:\Users\User\source\repos\MHPL_BT1\Todolist\DAL\obj\Debug\DAL.pdb
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\DAL\bin\Debug\DAL.dll
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\DAL\bin\Debug\DAL.pdb
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\DAL\bin\Debug\BO.dll
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\DAL\bin\Debug\BO.pdb
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\DAL\obj\Debug\DAL.csprojAssemblyReference.cache
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\DAL\obj\Debug\DAL.csproj.CopyComplete
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\DAL\obj\Debug\DAL.dll
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\DAL\obj\Debug\DAL.pdb

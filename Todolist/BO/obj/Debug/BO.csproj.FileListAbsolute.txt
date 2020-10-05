@@ -8,3 +8,8 @@ C:\Users\User\source\repos\MHPL_BT1\Todolist\BO\bin\Debug\BO.pdb
 C:\Users\User\source\repos\MHPL_BT1\Todolist\BO\obj\Debug\BO.csprojAssemblyReference.cache
 C:\Users\User\source\repos\MHPL_BT1\Todolist\BO\obj\Debug\BO.dll
 C:\Users\User\source\repos\MHPL_BT1\Todolist\BO\obj\Debug\BO.pdb
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\BO\bin\Debug\BO.dll
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\BO\bin\Debug\BO.pdb
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\BO\obj\Debug\BO.csprojAssemblyReference.cache
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\BO\obj\Debug\BO.dll
+C:\Users\vinni\source\repos\MHPL_BT1\Todolist\BO\obj\Debug\BO.pdb

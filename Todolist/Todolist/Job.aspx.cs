@@ -98,7 +98,6 @@ namespace Todolist
             LinkButton btn = (LinkButton)(sender);
             int id = int.Parse(btn.CommandArgument);
 
-            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('id = "+ id +"')</script>");
             Response.Redirect("jobform.aspx?id="+id);
             //mpePopUp.Hide();
         }

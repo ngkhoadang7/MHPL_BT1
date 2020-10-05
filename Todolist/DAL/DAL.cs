@@ -15,7 +15,7 @@ namespace DAL
         {
             string cnnString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             //cnn = new SqlConnection(cnnString);
-            cnn = new SqlConnection("Data Source=VINNIE-PC\\SQLEXPRESS;Initial Catalog=DB_Todolist;Integrated Security=True");
+            cnn = new SqlConnection("Data Source=VINNE-LAP\\SQLEXPRESS;Initial Catalog=DB_Todolist;Integrated Security=True");
             return cnn;
         }
     }

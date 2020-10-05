@@ -30,7 +30,7 @@ table tbody tr th {
 .popup {
     height: 470px;
     width: 550px;
-    margin: 10% auto;
+    margin: 7% auto;
     position: relative;
     z-index: 10;
     border: 1px solid black;
