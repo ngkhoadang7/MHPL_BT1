@@ -65,13 +65,14 @@ namespace Todolist
         protected void btnDetail_Click(object sender, EventArgs e)
         {
             LinkButton btn = (LinkButton)(sender);
-            List<BO.Job> job = new List<BO.Job>();
-
+            
             int id = int.Parse(btn.CommandArgument);
 
-            job.Add(jobBLL.getJob(id));
+            BO.Job job = jobBLL.getJob(id);
 
-            DetailsView1.DataSource = job;
+            jobList.Add(job);
+
+            DetailsView1.DataSource = jobList;
             DetailsView1.DataBind();
             
             switch (DetailsView1.Rows[5].Cells[1].Text)
@@ -85,21 +86,21 @@ namespace Todolist
                 case "0": { DetailsView1.Rows[7].Cells[1].Text = "Công khai"; } break;
                 case "1": { DetailsView1.Rows[7].Cells[1].Text = "Cá nhân"; } break;
             }
-            
+
+            btnEdit.CommandArgument = job.id.ToString();
+
             mpePopUp.Show();
         }
 
-
-        protected void btnOpenPopUp_Click(object sender, EventArgs e)
-        {
-            mpePopUp.Show();
-        }
-
-        protected void btnOk_Click(object sender, EventArgs e)
+        protected void btnEdit_Click(object sender, EventArgs e)
         {
             //Do Work
+            LinkButton btn = (LinkButton)(sender);
+            int id = int.Parse(btn.CommandArgument);
 
-            mpePopUp.Hide();
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('id = "+ id +"')</script>");
+            Response.Redirect("jobform.aspx?id="+id);
+            //mpePopUp.Hide();
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
