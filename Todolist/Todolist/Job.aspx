@@ -6,7 +6,7 @@
 
     <h2>Công việc</h2>
     <hr />
-
+    <a type="button" href="./JobForm.aspx" role="button" class="btn btn-success mb-10px">Thêm</a>
     <asp:GridView ID="GridView1" 
         runat="server" 
         class="table table-striped text-center " 

@@ -28,3 +28,36 @@ textarea {
         padding: 0;
     }
 }
+
+
+/* common CSS */
+
+.w-100 {
+    width: 100% !important;
+}
+
+.float-right {
+    float: right !important;
+}
+
+.float-left {
+    float: left !important;
+}
+
+table tbody tr th {
+    text-align: center !important;
+}
+
+.mr-10px {
+    margin-right: 10px !important;
+}
+
+.ml-10px {
+    margin-left: 10px !important;
+}
+
+.mb-10px {
+    margin-bottom: 10px !important;
+}
+
+/*------------------*/

@@ -31,10 +31,13 @@ namespace Todolist
                     coworker.Value = (job.coworker == null) ? "" : job.coworker.ToString();
 
                     btnAccept.CommandName = "Edit";
+                    lblTitle.Text = "<h3>Sửa công việc "+ job.id.ToString() +"</h3>";
                 } 
                 else
                 {
                     btnAccept.CommandName = "Add";
+                    startDate.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                    lblTitle.Text = "<h3>Thêm công việc</h3>";
                 }
                 
             }
@@ -64,12 +67,59 @@ namespace Todolist
 
         protected void Accept_Add(object sender, EventArgs e)
         {
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Add')</script>");
+            
+            BO.Job job = new BO.Job();
+            job.user_id = 1; // set to demo
+            if(title.Value != "")
+            {
+                job.title = title.Value;
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Tên công việc không được bỏ trống')</script>");
+                title.Focus();
+                return;
+            }
+
+            if (startDate.Value != "" && DateTime.Compare(Convert.ToDateTime(startDate.Value).Date, DateTime.Now.Date) == 0)
+            {
+                job.startDate = Convert.ToDateTime(startDate.Value);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Ngày bắt đầu phải là ngày hiện tại')</script>");
+                startDate.Focus();
+                return;
+            }
+
+            if (finishDate.Value != "" && DateTime.Compare(Convert.ToDateTime(finishDate.Value).Date, Convert.ToDateTime(startDate.Value).Date) >= 0)
+            {
+                job.finishDate = Convert.ToDateTime(finishDate.Value);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Ngày kết thúc phải sau hoặc cùng ngày bắt đầu')</script>");
+                finishDate.Focus();
+                return;
+            }
+
+            if (coworker.Value == "")
+            {
+                job.coworker = null;
+            }
+            else
+            {
+                job.coworker = coworker.Value;
+            }
+
+            job.privacy = int.Parse(privacy.Value);
+            job.status = int.Parse(status.Value);
+            
         }
 
         protected void Accept_Edit(object sender, EventArgs e)
         {
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Edit')</script>");
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Edit')</script>");
         }
     }
 }
