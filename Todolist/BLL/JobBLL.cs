@@ -21,6 +21,10 @@ namespace BLL
             Job data = JobDAL.getJob(id);
             return data;
         }
+        
+        public void addJob(Job job)
+        {
 
+        }
     }
 }

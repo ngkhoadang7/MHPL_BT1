@@ -108,5 +108,44 @@ namespace DAL
             }
             return data;
         }
+
+        public void addJob(Job job)
+        {
+            SqlConnection cnn;
+            SqlCommand cmd;
+            string sql = null;
+
+            cnn = DAL.connectDB();
+            if (cnn.State == ConnectionState.Open)
+            {
+                cnn.Close();
+            }
+
+            sql = "INSERT INTO jobs(user_id, title, startDate, finishDate, status, coworker, privacy, attach)" +
+                "VALUES (@user_id, @title, @startDate, @finishDate, @status, @coworker, @privacy, @attach)";
+
+            try
+            {
+                cnn.Open();
+                cmd = new SqlCommand(sql, cnn);
+
+                cmd.Parameters.AddWithValue("@user_id", job.user_id);
+                cmd.Parameters.AddWithValue("@title", job.title);
+                cmd.Parameters.AddWithValue("@startDate", job.startDate);
+                cmd.Parameters.AddWithValue("@finishDate", job.finishDate);
+                cmd.Parameters.AddWithValue("@status", job.status);
+                cmd.Parameters.AddWithValue("@coworker", job.coworker);
+                cmd.Parameters.AddWithValue("@privacy", job.privacy);
+                cmd.Parameters.AddWithValue("@attach", job.attach);
+
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+                cnn.Close();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Can not open connection!");
+            }
+        }
     }
 }

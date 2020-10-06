@@ -114,7 +114,7 @@ namespace Todolist
 
             job.privacy = int.Parse(privacy.Value);
             job.status = int.Parse(status.Value);
-            
+            job.attach = null; // just set to demo
         }
 
         protected void Accept_Edit(object sender, EventArgs e)
