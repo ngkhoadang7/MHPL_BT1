@@ -10,7 +10,7 @@
                 <!--<h3 id="page-title" class="m-0 font-weight-bold text-primary d-inline" >Test</h3>-->
                 <hr />
             </div>
-            <form class="card-body" id="product-form" >
+            <form class="card-body" >
                 <input type="hidden" id="id" />
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -48,7 +48,7 @@
                         <input type="file" id="attach" class="form-control" />
                     </div>
                     <div class="form-group col-md-12 btn-section">
-                        <asp:Button  id="btnAccept" Text="Xác nhận" CssClass="btn btn-success" CommandName="Add" OnCommand="Button_Command" runat="server"/>
+                        <asp:Button  id="btnAccept" Text="Xác nhận" CssClass="btn btn-success" OnCommand="Button_Command" runat="server"/>
                         <a type="button" href="./Job.aspx" role="button" class="btn btn-danger mr-10px">Hủy</a>
                     </div>
                 </div>

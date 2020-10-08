@@ -1,0 +1,42 @@
+﻿/* Pop up CSS */
+.pnlBackGround {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+}
+
+.popup {
+    height: 250px;
+    width: 400px;
+    margin: 11% auto;
+    position: relative;
+    z-index: 10;
+    border: 1px solid black;
+    border-radius: 10px;
+    background: white;
+    overflow: hidden;
+}
+
+
+.popup .main {
+    padding: 0 5px;
+}
+
+.popup .header {
+    padding: 5px;
+    background: #cccccc;
+    border-bottom: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    position: relative;
+    text-align:center;
+}
+
+.popup .btn-section {
+    float: right;
+    padding: 0 10px 0 0;
+}

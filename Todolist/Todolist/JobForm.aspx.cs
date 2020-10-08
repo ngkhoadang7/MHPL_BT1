@@ -31,6 +31,10 @@ namespace Todolist
                     coworker.Value = (job.coworker == null) ? "" : job.coworker.ToString();
 
                     btnAccept.CommandName = "Edit";
+                    btnAccept.CommandArgument = Request.QueryString["id"];
+
+                    startDate.Disabled = true;
+
                     lblTitle.Text = "<h3>Sửa công việc "+ job.id.ToString() +"</h3>";
                 } 
                 else
@@ -67,7 +71,8 @@ namespace Todolist
 
         protected void Accept_Add(object sender, EventArgs e)
         {
-            
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Thêm công việc thành công')</script>");
+
             BO.Job job = new BO.Job();
             job.user_id = 1; // set to demo
             if(title.Value != "")
@@ -115,11 +120,63 @@ namespace Todolist
             job.privacy = int.Parse(privacy.Value);
             job.status = int.Parse(status.Value);
             job.attach = null; // just set to demo
+
+            JobBLL.addJob(job);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                "alert('Thêm công việc thành công'); window.location='" +
+                Request.ApplicationPath + "Job.aspx';", true);
         }
 
         protected void Accept_Edit(object sender, EventArgs e)
         {
-            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Edit')</script>");
+            int id = int.Parse(btnAccept.CommandArgument);
+            
+            BO.Job job = new BO.Job();
+            job.id = id;
+            job.user_id = 1; // set to demo
+            if (title.Value != "")
+            {
+                job.title = title.Value;
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Tên công việc không được bỏ trống')</script>");
+                title.Focus();
+                return;
+            }
+
+            
+            job.startDate = Convert.ToDateTime(startDate.Value);
+            
+
+            if (finishDate.Value != "" && DateTime.Compare(Convert.ToDateTime(finishDate.Value).Date, Convert.ToDateTime(startDate.Value).Date) >= 0)
+            {
+                job.finishDate = Convert.ToDateTime(finishDate.Value);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Ngày kết thúc phải sau hoặc cùng ngày bắt đầu')</script>");
+                finishDate.Focus();
+                return;
+            }
+
+            if (coworker.Value == "")
+            {
+                job.coworker = null;
+            }
+            else
+            {
+                job.coworker = coworker.Value;
+            }
+
+            job.privacy = int.Parse(privacy.Value);
+            job.status = int.Parse(status.Value);
+            job.attach = null; // just set to demo
+
+            JobBLL.editJob(job);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                "alert('Sửa công việc thành công'); window.location='" +
+                Request.ApplicationPath + "Job.aspx';", true);
         }
     }
 }

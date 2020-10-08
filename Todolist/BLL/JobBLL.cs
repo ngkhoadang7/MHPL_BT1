@@ -22,9 +22,13 @@ namespace BLL
             return data;
         }
         
-        public void addJob(Job job)
+        public static void addJob(Job job)
         {
-
+            JobDAL.addJob(job);
+        }
+        public static void editJob(Job job)
+        {
+            JobDAL.editJob(job);
         }
     }
 }

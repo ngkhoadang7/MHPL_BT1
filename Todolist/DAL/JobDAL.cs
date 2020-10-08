@@ -15,7 +15,7 @@ namespace DAL
         {
             SqlConnection cnn;
             SqlCommand cmd;
-            string sql = null;
+            string sql;
             SqlDataReader reader;
             List<Job> data = new List<Job>();
 
@@ -27,37 +27,31 @@ namespace DAL
 
             sql = "SELECT * FROM jobs";
 
-            try
+            
+            cnn.Open();
+            cmd = new SqlCommand(sql, cnn);
+            reader = cmd.ExecuteReader();
+            while (reader.HasRows)
             {
-                cnn.Open();
-                cmd = new SqlCommand(sql, cnn);
-                reader = cmd.ExecuteReader();
-                while (reader.HasRows)
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        Job job = new Job();
-                        job.id = reader.GetInt32(0);
-                        job.user_id = reader.GetInt32(1);
-                        job.title = reader.GetString(2);
-                        job.startDate = reader.GetDateTime(3);
-                        job.finishDate = reader.GetDateTime(4);
-                        job.status = reader.GetInt32(5);
-                        job.coworker = reader.IsDBNull(reader.GetOrdinal("coworker")) ? null : reader.GetString(6);
-                        job.privacy = reader.GetInt32(7);
-                        job.attach = reader.IsDBNull(reader.GetOrdinal("attach")) ? null : reader.GetString(8);
-                        data.Add(job);
-                    }
-                    reader.NextResult();
+                    Job job = new Job();
+                    job.id = reader.GetInt32(0);
+                    job.user_id = reader.GetInt32(1);
+                    job.title = reader.GetString(2);
+                    job.startDate = reader.GetDateTime(3);
+                    job.finishDate = reader.GetDateTime(4);
+                    job.status = reader.GetInt32(5);
+                    job.coworker = reader.IsDBNull(reader.GetOrdinal("coworker")) ? null : reader.GetString(6);
+                    job.privacy = reader.GetInt32(7);
+                    job.attach = reader.IsDBNull(reader.GetOrdinal("attach")) ? null : reader.GetString(8);
+                    data.Add(job);
                 }
-                reader.Close();
-                cmd.Dispose();
-                cnn.Close();
+                reader.NextResult();
             }
-            catch (Exception)
-            {
-                Console.WriteLine("Can not open connection!");
-            }
+            reader.Close();
+            cmd.Dispose();
+            cnn.Close();
             return data;
         }
 
@@ -65,7 +59,7 @@ namespace DAL
         {
             SqlConnection cnn;
             SqlCommand cmd;
-            string sql = null;
+            string sql;
             SqlDataReader reader;
             Job data = new Job();
 
@@ -77,43 +71,38 @@ namespace DAL
 
             sql = "SELECT * FROM jobs WHERE id = "+ id.ToString();
 
-            try
+            
+            cnn.Open();
+            cmd = new SqlCommand(sql, cnn);
+            reader = cmd.ExecuteReader();
+            while (reader.HasRows)
             {
-                cnn.Open();
-                cmd = new SqlCommand(sql, cnn);
-                reader = cmd.ExecuteReader();
-                while (reader.HasRows)
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        data.id = reader.GetInt32(0);
-                        data.user_id = reader.GetInt32(1);
-                        data.title = reader.GetString(2);
-                        data.startDate = reader.GetDateTime(3);
-                        data.finishDate = reader.GetDateTime(4);
-                        data.status = reader.GetInt32(5);
-                        data.coworker = reader.IsDBNull(reader.GetOrdinal("coworker")) ? null : reader.GetString(6);
-                        data.privacy = reader.GetInt32(7);
-                        data.attach = reader.IsDBNull(reader.GetOrdinal("attach")) ? null : reader.GetString(8);
-                    }
-                    reader.NextResult();
+                    data.id = reader.GetInt32(0);
+                    data.user_id = reader.GetInt32(1);
+                    data.title = reader.GetString(2);
+                    data.startDate = reader.GetDateTime(3);
+                    data.finishDate = reader.GetDateTime(4);
+                    data.status = reader.GetInt32(5);
+                    data.coworker = reader.IsDBNull(reader.GetOrdinal("coworker")) ? null : reader.GetString(6);
+                    data.privacy = reader.GetInt32(7);
+                    data.attach = reader.IsDBNull(reader.GetOrdinal("attach")) ? null : reader.GetString(8);
                 }
-                reader.Close();
-                cmd.Dispose();
-                cnn.Close();
+                reader.NextResult();
             }
-            catch (Exception)
-            {
-                Console.WriteLine("Can not open connection!");
-            }
+            reader.Close();
+            cmd.Dispose();
+            cnn.Close();
+
             return data;
         }
 
-        public void addJob(Job job)
+        public static void addJob(Job job)
         {
             SqlConnection cnn;
             SqlCommand cmd;
-            string sql = null;
+            string sql;
 
             cnn = DAL.connectDB();
             if (cnn.State == ConnectionState.Open)
@@ -124,28 +113,84 @@ namespace DAL
             sql = "INSERT INTO jobs(user_id, title, startDate, finishDate, status, coworker, privacy, attach)" +
                 "VALUES (@user_id, @title, @startDate, @finishDate, @status, @coworker, @privacy, @attach)";
 
-            try
+            
+            cnn.Open();
+            cmd = new SqlCommand(sql, cnn);
+
+            cmd.Parameters.AddWithValue("@user_id", job.user_id);
+            cmd.Parameters.AddWithValue("@title", job.title);
+            cmd.Parameters.AddWithValue("@startDate", job.startDate);
+            cmd.Parameters.AddWithValue("@finishDate", job.finishDate);
+            cmd.Parameters.AddWithValue("@status", job.status);
+
+            if(job.coworker == null)
             {
-                cnn.Open();
-                cmd = new SqlCommand(sql, cnn);
-
-                cmd.Parameters.AddWithValue("@user_id", job.user_id);
-                cmd.Parameters.AddWithValue("@title", job.title);
-                cmd.Parameters.AddWithValue("@startDate", job.startDate);
-                cmd.Parameters.AddWithValue("@finishDate", job.finishDate);
-                cmd.Parameters.AddWithValue("@status", job.status);
+                cmd.Parameters.AddWithValue("@coworker", DBNull.Value);
+            }
+            else
+            {
                 cmd.Parameters.AddWithValue("@coworker", job.coworker);
-                cmd.Parameters.AddWithValue("@privacy", job.privacy);
-                cmd.Parameters.AddWithValue("@attach", job.attach);
+            }
 
-                cmd.ExecuteNonQuery();
-                cmd.Dispose();
+            cmd.Parameters.AddWithValue("@privacy", job.privacy);
+
+            if (job.attach == null)
+            {
+                cmd.Parameters.AddWithValue("@attach", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@attach", job.attach);
+            }
+
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            cnn.Close();
+        }
+
+        public static void editJob(Job job)
+        {
+            SqlConnection cnn;
+            SqlCommand cmd;
+            string sql;
+
+            cnn = DAL.connectDB();
+            if (cnn.State == ConnectionState.Open)
+            {
                 cnn.Close();
             }
-            catch (Exception)
+
+            sql = "UPDATE jobs SET " +
+                "user_id = " + job.id + ", " +
+                "title ='" + job.title + "', " +
+                "startDate ='" + job.startDate + "', " +
+                "finishDate ='" + job.finishDate + "', " +
+                "status ='" + job.status + "', ";
+            if (job.coworker == null)
             {
-                Console.WriteLine("Can not open connection!");
+                sql += "coworker = NULL, ";
             }
+            else
+            {
+                sql += "coworker ='" + job.coworker + "', ";
+            }
+            sql += "privacy = "+ job.privacy +", ";
+            if (job.attach == null)
+            {
+                sql += "attach = NULL";
+            }
+            else
+            {
+                sql += "attach = '" + job.attach + "'";
+            }
+            sql += " WHERE id = " + job.id;
+
+            
+            cnn.Open();
+            cmd = new SqlCommand(sql, cnn);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            cnn.Close();
         }
     }
 }
