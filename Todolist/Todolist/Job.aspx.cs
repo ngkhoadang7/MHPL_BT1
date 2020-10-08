@@ -21,7 +21,15 @@ namespace Todolist
         {
             if (!this.IsPostBack)
             {
-                jobList = jobBLL.getAllJob();
+                if (!HttpContext.Current.Request.Cookies.AllKeys.Contains("userInfo"))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                            "alert('Phiên làm việc hết hạn'); window.location='" +
+                            Request.ApplicationPath + "Login.aspx';", true);
+                    return;
+                }
+
+                jobList = jobBLL.getAllJobForStaff(int.Parse(Request.Cookies["userInfo"]["id"]));
                 GridView1.DataSource = jobList;
                 GridView1.DataBind();
 
@@ -40,7 +48,7 @@ namespace Todolist
         {
             GridView1.PageIndex = e.NewPageIndex;
 
-            jobList = jobBLL.getAllJob();
+            jobList = jobBLL.getAllJobForStaff(int.Parse(Request.Cookies["userInfo"]["id"]));
 
             GridView1.DataSource = jobList;
             GridView1.DataBind();

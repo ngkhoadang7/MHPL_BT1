@@ -13,6 +13,12 @@ namespace BLL
 {
     public class UserBLL
     {
+        public List<User> getAllUserExceptMe(int id)
+        {
+            List<User> data = UserDAL.getAllUserExceptMe(id);
+            return data;
+        }
+
         public User login(string email, string password)
         {
             password = MD5Hash(password);

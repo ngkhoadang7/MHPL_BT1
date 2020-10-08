@@ -51,6 +51,15 @@ namespace Todolist
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl finishDate;
 
         /// <summary>
+        /// coworker control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList coworker;
+
+        /// <summary>
         /// privacy control.
         /// </summary>
         /// <remarks>
@@ -67,15 +76,6 @@ namespace Todolist
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlSelect status;
-
-        /// <summary>
-        /// coworker control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText coworker;
 
         /// <summary>
         /// btnAccept control.

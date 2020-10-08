@@ -26,6 +26,11 @@
                         <input type="date" id="finishDate" class="form-control" runat="server" />
                     </div>
                     <div class="form-group col-md-4">
+                        <label for="coworker">Người làm chung</label>
+                        <asp:DropDownList ID="coworker" class="form-control" runat="server">
+                        </asp:DropDownList>
+                    </div>
+                    <div class="form-group col-md-4">
                         <label for="privacy">Phạm vi</label>
                         <select id="privacy" class="form-control" runat="server">
                             <option value="0">Công khai</option>
@@ -38,10 +43,6 @@
                             <option value="0">Chưa hoàn thành</option>
                             <option value="1">Hoàn thành</option>
                         </select>
-                    </div>
-                    <div class="form-group col-md-8">
-                        <label for="coworker">Người làm chung</label>
-                        <input type="text" id="coworker" class="form-control" placeholder="Người làm chung" runat="server" />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="attach">Tệp đính kèm</label>

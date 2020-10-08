@@ -16,6 +16,12 @@ namespace BLL
             return data;
         }
 
+        public List<Job> getAllJobForStaff(int id)
+        {
+            List<Job> data = JobDAL.getAllJobForStaff(id);
+            return data;
+        }
+
         public Job getJob(int id)
         {
             Job data = JobDAL.getJob(id);

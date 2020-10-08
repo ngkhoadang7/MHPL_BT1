@@ -15,6 +15,28 @@ namespace Todolist
         {
             if (!this.IsPostBack)
             {
+                if (!HttpContext.Current.Request.Cookies.AllKeys.Contains("userInfo"))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                            "alert('Phiên làm việc hết hạn'); window.location='" +
+                            Request.ApplicationPath + "Login.aspx';", true);
+                    return;
+                }
+
+                UserBLL userBLL = new UserBLL();
+                List<User> listUser = userBLL.getAllUserExceptMe(int.Parse(Request.Cookies["userInfo"]["id"]));
+
+                User temp = new User();
+                temp.id = 0;
+                temp.name = "Không có";
+
+                listUser.Insert(0, temp);
+
+                coworker.DataTextField = "name";
+                coworker.DataValueField = "id";
+                coworker.DataSource = listUser;
+                coworker.DataBind();
+
                 if (Request.QueryString["id"] != null)
                 {
                     int id = int.Parse(Request.QueryString["id"]);
@@ -27,8 +49,16 @@ namespace Todolist
                     startDate.Value = job.startDate.ToString("yyyy-MM-dd");
                     finishDate.Value = job.finishDate.ToString("yyyy-MM-dd");
                     privacy.Value = job.privacy.ToString();
-                    status.Value = job.status.ToString();
-                    coworker.Value = (job.coworker == null) ? "" : job.coworker.ToString();
+                    status.Value = job.status.ToString(); 
+
+                    if(job.coworker == null)
+                    {
+                        coworker.SelectedValue = "";
+                    }
+                    else
+                    {
+                        coworker.SelectedValue = job.coworker.ToString();
+                    }
 
                     btnAccept.CommandName = "Edit";
                     btnAccept.CommandArgument = Request.QueryString["id"];
@@ -49,6 +79,13 @@ namespace Todolist
 
         protected void Button_Command(object sender, CommandEventArgs e)
         {
+            if (!HttpContext.Current.Request.Cookies.AllKeys.Contains("userInfo"))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                        "alert('Phiên làm việc hết hạn'); window.location='" +
+                        Request.ApplicationPath + "Login.aspx';", true);
+                return;
+            }
 
             switch (e.CommandName)
             {
@@ -71,11 +108,9 @@ namespace Todolist
 
         protected void Accept_Add(object sender, EventArgs e)
         {
-            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Thêm công việc thành công')</script>");
-
             BO.Job job = new BO.Job();
-            job.user_id = 1; // set to demo
-            if(title.Value != "")
+            job.user_id = int.Parse(Request.Cookies["userInfo"]["id"]);
+            if (title.Value != "")
             {
                 job.title = title.Value;
             }
@@ -108,13 +143,13 @@ namespace Todolist
                 return;
             }
 
-            if (coworker.Value == "")
+            if (coworker.SelectedItem.Value == "0")
             {
                 job.coworker = null;
             }
             else
             {
-                job.coworker = coworker.Value;
+                job.coworker = coworker.SelectedItem.Value;
             }
 
             job.privacy = int.Parse(privacy.Value);
@@ -133,7 +168,7 @@ namespace Todolist
             
             BO.Job job = new BO.Job();
             job.id = id;
-            job.user_id = 1; // set to demo
+            job.user_id = int.Parse(Request.Cookies["userInfo"]["id"]);
             if (title.Value != "")
             {
                 job.title = title.Value;
@@ -160,13 +195,13 @@ namespace Todolist
                 return;
             }
 
-            if (coworker.Value == "")
+            if (coworker.SelectedItem.Value == "0")
             {
                 job.coworker = null;
             }
             else
             {
-                job.coworker = coworker.Value;
+                job.coworker = coworker.SelectedItem.Value;
             }
 
             job.privacy = int.Parse(privacy.Value);
