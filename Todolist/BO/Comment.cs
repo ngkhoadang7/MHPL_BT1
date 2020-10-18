@@ -8,9 +8,9 @@ namespace BO
 {
     public class Comment
     {
-        public string id { get; set; }
-        public string user_id { get; set; }
-        public string job_id { get; set; }
+        public int id { get; set; }
+        public int user_id { get; set; }
+        public int job_id { get; set; }
         public string content { get; set; }
         public DateTime postTime { get; set; }
     }

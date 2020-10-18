@@ -1,0 +1,3 @@
+hello;xin chao
+apple;trai tao
+banana;trai chuoi

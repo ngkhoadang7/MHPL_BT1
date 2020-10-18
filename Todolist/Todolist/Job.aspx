@@ -12,7 +12,7 @@
         class="table table-striped text-center " 
         AutoGenerateColumns="False" 
         AllowPaging="true"
-        PageSize="1"
+        PageSize="10"
         OnPageIndexChanging="GridView1_PageIndexChanging">
         <Columns>
             <asp:BoundField DataField="user_id" HeaderText="Mã NV" SortExpression="user_id" />
@@ -23,7 +23,7 @@
             <asp:BoundField DataField="coworker" HeaderText="Người làm chung" SortExpression="coworker" NullDisplayText="Không có"/> 
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:LinkButton ID="btnFinish" runat="server" Text="Hoàn thành" OnClick="btnFinish_Click"></asp:LinkButton>
+                    <a href="./Comment?jobId=<%# Eval("id")%>" >Bình luận</a>
                     <asp:LinkButton ID="btnDetail" runat="server" Text="Xem" OnClick="btnDetail_Click" CommandArgument='<%# Eval("id")%>'></asp:LinkButton>
                 </ItemTemplate>                
             </asp:TemplateField>

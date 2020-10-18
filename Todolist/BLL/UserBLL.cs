@@ -13,10 +13,45 @@ namespace BLL
 {
     public class UserBLL
     {
+        public static List<User> getAllUser()
+        {
+            List<User> data = UserDAL.getAllUser();
+            return data;
+        }
         public List<User> getAllUserExceptMe(int id)
         {
             List<User> data = UserDAL.getAllUserExceptMe(id);
             return data;
+        }
+
+        public List<User> getAllUserExceptAdmin()
+        {
+            List<User> data = UserDAL.getAllUserExceptAdmin();
+            return data;
+        }
+
+        public static User getUser(int id)
+        {
+            return UserDAL.getUser(id);
+        }
+
+        public static bool addUser(User user)
+        {
+            user.password = MD5Hash(user.password);
+
+            return UserDAL.addUser(user);
+        }
+
+        public static bool editUser(User user)
+        {
+            user.password = MD5Hash(user.password);
+
+            return UserDAL.editUser(user);
+        }
+
+        public static bool deleteUser(int id)
+        {
+            return UserDAL.deleteUser(id);
         }
 
         public User login(string email, string password)
@@ -32,8 +67,13 @@ namespace BLL
             {
                 return user;
             }
-            
         }
+
+        public static bool isManager(int id)
+        {
+            return UserDAL.isManager(id);
+        }
+
 
         public static string MD5Hash(string text)
         {

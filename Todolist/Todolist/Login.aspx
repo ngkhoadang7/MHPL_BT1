@@ -19,7 +19,7 @@
 </head>
 <body>
     <div id="container-popup" class="pnlBackGround">
-        <form class="popup" runat="server">
+        <form class="popup" runat="server" defaultbutton="btnLogin">
             <div class="header">
                 <h4><b>Đăng nhập</b></h4>
             </div>

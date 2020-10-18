@@ -44,11 +44,15 @@
                             <option value="1">Hoàn thành</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="attach">Tệp đính kèm</label>
-                        <input type="file" id="attach" class="form-control" />
+                        <asp:FileUpload ID="attach" runat="server" CssClass="form-control" />
                     </div>
+                    <asp:panel id="divFile" CssClass="form-group col-md-8" runat="server">
+                        <div ID="divFileName" class="form-control" runat="server" style="margin-top: 25px"></div>
+                    </asp:panel>
                     <div class="form-group col-md-12 btn-section">
+                        <asp:Button  id="btnDelete" Text="Xóa" CssClass="btn btn-danger float-left"  OnCommand="btnDelete_OnClick" runat="server" OnClientClick="confirmDeleteJob()"/>
                         <asp:Button  id="btnAccept" Text="Xác nhận" CssClass="btn btn-success" OnCommand="Button_Command" runat="server"/>
                         <a type="button" href="./Job.aspx" role="button" class="btn btn-danger mr-10px">Hủy</a>
                     </div>
@@ -56,5 +60,22 @@
             </form>
         </div>
     </div>
+<script type = "text/javascript">
+    function Confirm() {
+        var confirmDeleteJob = document.createElement("INPUT");
+
+        confirmDeleteJob.type = "hidden";
+        confirmDeleteJob.name = "confirmDeleteJob";
+
+        if (confirm("Bạn có chắc chắn muốn xóa công việc này?")) {
+            confirmDeleteJob.value = "Yes";
+        }
+        else {
+            confirmDeleteJob.value = "No";
+        }
+
+        document.forms[0].appendChild(confirmDeleteJob);
+    }
+</script>
 
 </asp:Content>

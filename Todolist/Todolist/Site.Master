@@ -52,10 +52,15 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
+                        <li><a runat="server" href="~/Job">Công việc</a></li>
                     </ul>
+                    <div class="user-section">
+                        <div class="float-left" style="padding: 16px 10px 0 0">
+                            Xin chào, 
+                            <b id="userName" runat="server"></b>
+                        </div>
+                        <asp:LinkButton ID="btnLogout" runat="server" Text="Đăng xuất" class="btn btn-outline-light mt-10px float-left" OnClick="btnLogout_OnClick" OnClientClick="confirmLogout()" ></asp:LinkButton>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,5 +74,22 @@
         </div>
 
     </form>
+<script type = "text/javascript">
+    function confirmLogout() {
+        var confirmLogout = document.createElement("INPUT");
+
+        confirmLogout.type = "hidden";
+        confirmLogout.name = "confirmLogout";
+
+        if (confirm("Bạn muốn đăng xuất?")) {
+            confirmLogout.value = "Yes";
+        }
+        else {
+            confirmLogout.value = "No";
+        }
+
+        document.forms[0].appendChild(confirmLogout);
+    }
+</script>
 </body>
 </html>

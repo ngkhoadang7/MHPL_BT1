@@ -15,14 +15,6 @@ namespace Todolist
         {
             if (!this.IsPostBack)
             {
-                if (!HttpContext.Current.Request.Cookies.AllKeys.Contains("userInfo"))
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
-                            "alert('Phiên làm việc hết hạn'); window.location='" +
-                            Request.ApplicationPath + "Login.aspx';", true);
-                    return;
-                }
-
                 UserBLL userBLL = new UserBLL();
                 List<User> listUser = userBLL.getAllUserExceptMe(int.Parse(Request.Cookies["userInfo"]["id"]));
 
@@ -39,9 +31,15 @@ namespace Todolist
 
                 if (Request.QueryString["id"] != null)
                 {
+                    if(!JobBLL.canAccess(int.Parse(Request.Cookies["userInfo"]["id"]), int.Parse(Request.QueryString["id"]))) {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                            "alert('Bạn không có quyền truy cập'); window.location='" +
+                            Request.ApplicationPath + "Job.aspx';", true);
+                    }
+
+
                     int id = int.Parse(Request.QueryString["id"]);
-                    JobBLL jobBLL = new JobBLL();
-                    BO.Job job = jobBLL.getJob(id);
+                    BO.Job job = JobBLL.getJob(id);
 
                     //var localDateTime = DateTime.Now.ToString(""); <---- have to format like that to set value to input date type
 
@@ -57,13 +55,27 @@ namespace Todolist
                     }
                     else
                     {
-                        coworker.SelectedValue = job.coworker.ToString();
+                        coworker.SelectedValue = int.Parse(job.coworker).ToString();
+                    }
+
+                    if(job.attach != null)
+                    {
+                        divFileName.InnerText = job.attach;
                     }
 
                     btnAccept.CommandName = "Edit";
                     btnAccept.CommandArgument = Request.QueryString["id"];
+                    btnDelete.CommandArgument = Request.QueryString["id"];
 
-                    startDate.Disabled = true;
+                    if(DateTime.Compare(Convert.ToDateTime(job.finishDate.ToString("yyyy-MM-dd")).Date, DateTime.Now.Date) < 0)
+                    {
+                        title.Disabled = true;
+                        startDate.Disabled = true;
+                        finishDate.Disabled = true;
+                        privacy.Disabled = true;
+                        coworker.Enabled = false;
+                        coworker.CssClass = "form-control";
+                    }
 
                     lblTitle.Text = "<h3>Sửa công việc "+ job.id.ToString() +"</h3>";
                 } 
@@ -74,6 +86,28 @@ namespace Todolist
                     lblTitle.Text = "<h3>Thêm công việc</h3>";
                 }
                 
+            }
+        }
+
+        protected void btnDelete_OnClick(object sender, CommandEventArgs e)
+        {
+            string confirmValue = Request.Form["confirmDeleteJob"];
+            if (confirmValue == "Yes")
+            {
+                int id = int.Parse(btnDelete.CommandArgument);
+                
+                if (JobBLL.deleteJob(id))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                        "alert('Xóa công việc thành công'); window.location='" +
+                        Request.ApplicationPath + "Job.aspx';", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                        "alert('Xảy ra lỗi'); window.location='" +
+                        Request.ApplicationPath + "JobForm.aspx';", true);
+                }
             }
         }
 
@@ -154,64 +188,160 @@ namespace Todolist
 
             job.privacy = int.Parse(privacy.Value);
             job.status = int.Parse(status.Value);
-            job.attach = null; // just set to demo
+            string filePath = "";
+            if (attach.HasFile)
+            {
+                if (!JobBLL.CheckFileType(attach.FileName))
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('File không phù hợp')</script>");
+                    return;
+                }
+                job.attach = JobBLL.GenerateNameFile(attach.FileName);
+                filePath = MapPath("File/"+ job.attach);
+                
+            }
+            else
+            {
+                job.attach = null;
+            }
 
-            JobBLL.addJob(job);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
-                "alert('Thêm công việc thành công'); window.location='" +
-                Request.ApplicationPath + "Job.aspx';", true);
+            if (JobBLL.addJob(job))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                    "alert('Thêm công việc thành công'); window.location='" +
+                    Request.ApplicationPath + "Job.aspx';", true);
+                if (attach.HasFile)
+                    attach.SaveAs(filePath);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                    "alert('Xảy ra lỗi'); window.location='" +
+                    Request.ApplicationPath + "JobForm.aspx';", true);
+            }
         }
 
         protected void Accept_Edit(object sender, EventArgs e)
         {
             int id = int.Parse(btnAccept.CommandArgument);
-            
+            string filePath = "";
+            string currentFile = "";
+
             BO.Job job = new BO.Job();
             job.id = id;
             job.user_id = int.Parse(Request.Cookies["userInfo"]["id"]);
-            if (title.Value != "")
+
+            if (DateTime.Compare(Convert.ToDateTime(job.finishDate.ToString("yyyy-MM-dd")).Date, DateTime.Now.Date) < 0)
             {
                 job.title = title.Value;
-            }
-            else
-            {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Tên công việc không được bỏ trống')</script>");
-                title.Focus();
-                return;
-            }
-
-            
-            job.startDate = Convert.ToDateTime(startDate.Value);
-            
-
-            if (finishDate.Value != "" && DateTime.Compare(Convert.ToDateTime(finishDate.Value).Date, Convert.ToDateTime(startDate.Value).Date) >= 0)
-            {
+                job.startDate = Convert.ToDateTime(startDate.Value);
                 job.finishDate = Convert.ToDateTime(finishDate.Value);
+                if (coworker.SelectedItem.Value == "0")
+                {
+                    job.coworker = null;
+                }
+                else
+                {
+                    job.coworker = coworker.SelectedItem.Value;
+                }
+                job.privacy = int.Parse(privacy.Value);
+                job.status = int.Parse(status.Value);
+                
+                if (attach.HasFile)
+                {
+                    if (!JobBLL.CheckFileType(attach.FileName))
+                    {
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('File không phù hợp')</script>");
+                        return;
+                    }
+                    job.attach = JobBLL.GenerateNameFile(attach.FileName);
+                    filePath = MapPath("File/" + job.attach);
+
+                    if (divFileName.InnerText != "")
+                        currentFile = divFileName.InnerText;
+                }
+                else
+                {
+                    job.attach = null;
+                }
+
             }
             else
             {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Ngày kết thúc phải sau hoặc cùng ngày bắt đầu')</script>");
-                finishDate.Focus();
-                return;
+                if (title.Value != "")
+                {
+                    job.title = title.Value;
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Tên công việc không được bỏ trống')</script>");
+                    title.Focus();
+                    return;
+                }
+
+                job.startDate = Convert.ToDateTime(startDate.Value);
+
+                if (finishDate.Value != "" &&
+                    DateTime.Compare(Convert.ToDateTime(finishDate.Value).Date, Convert.ToDateTime(startDate.Value).Date) >= 0 &&
+                    DateTime.Compare(Convert.ToDateTime(finishDate.Value).Date, DateTime.Now.Date) >= 0)
+                {
+                    job.finishDate = Convert.ToDateTime(finishDate.Value);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Ngày kết thúc phải sau hoặc cùng ngày bắt đầu')</script>");
+                    finishDate.Focus();
+                    return;
+                }
+
+
+                if (coworker.SelectedItem.Value == "0")
+                {
+                    job.coworker = null;
+                }
+                else
+                {
+                    job.coworker = coworker.SelectedItem.Value;
+                }
+
+                job.privacy = int.Parse(privacy.Value);
+                job.status = int.Parse(status.Value);
+
+                if (attach.HasFile)
+                {
+                    if (!JobBLL.CheckFileType(attach.FileName))
+                    {
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('File không phù hợp')</script>");
+                        return;
+                    }
+                    job.attach = JobBLL.GenerateNameFile(attach.FileName);
+                    filePath = MapPath("File/" + job.attach);
+
+                    if (divFileName.InnerText != "")
+                        currentFile = divFileName.InnerText;
+                }
+                else
+                {
+                    job.attach = null;
+                }
             }
 
-            if (coworker.SelectedItem.Value == "0")
+            if (JobBLL.editJob(job))
             {
-                job.coworker = null;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                    "alert('Sửa công việc thành công'); window.location='" +
+                    Request.ApplicationPath + "Job.aspx';", true);
+                if (attach.HasFile)
+                    attach.SaveAs(filePath);
+                if (currentFile != "")
+                    JobBLL.deleteFile(currentFile);
             }
             else
             {
-                job.coworker = coworker.SelectedItem.Value;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                    "alert('Xảy ra lỗi'); window.location='" +
+                    Request.ApplicationPath + "JobForm.aspx';", true);
             }
-
-            job.privacy = int.Parse(privacy.Value);
-            job.status = int.Parse(status.Value);
-            job.attach = null; // just set to demo
-
-            JobBLL.editJob(job);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
-                "alert('Sửa công việc thành công'); window.location='" +
-                Request.ApplicationPath + "Job.aspx';", true);
         }
     }
 }

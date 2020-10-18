@@ -16,19 +16,10 @@ namespace Todolist
         JobBLL jobBLL = new JobBLL();
         List<BO.Job> jobList = new List<BO.Job>();
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
             {
-                if (!HttpContext.Current.Request.Cookies.AllKeys.Contains("userInfo"))
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
-                            "alert('Phiên làm việc hết hạn'); window.location='" +
-                            Request.ApplicationPath + "Login.aspx';", true);
-                    return;
-                }
-
                 jobList = jobBLL.getAllJobForStaff(int.Parse(Request.Cookies["userInfo"]["id"]));
                 GridView1.DataSource = jobList;
                 GridView1.DataBind();
@@ -64,19 +55,13 @@ namespace Todolist
             }
         }
 
-
-        protected void btnFinish_Click(object sender, EventArgs e)
-        {
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "Scripts", "<script>alert('Finish')</script>");
-        }
-
         protected void btnDetail_Click(object sender, EventArgs e)
         {
             LinkButton btn = (LinkButton)(sender);
             
             int id = int.Parse(btn.CommandArgument);
 
-            BO.Job job = jobBLL.getJob(id);
+            BO.Job job = JobBLL.getJob(id);
 
             jobList.Add(job);
 

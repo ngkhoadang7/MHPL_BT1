@@ -56,8 +56,46 @@ table tbody tr th {
     margin-left: 10px !important;
 }
 
+.mt-10px {
+    margin-top:10px !important;
+}
+
 .mb-10px {
     margin-bottom: 10px !important;
 }
+.display-none{
+    display:none !important;
+}
+.no-padding {
+    padding: 0 !important;
+}
+.no-margin {
+    margin: 0 !important;
+}
+.my-gray-bg {
+    background: #D0D0D0;
+}
 
+.btn-outline-light:hover {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+.btn-outline-light {
+    color: #f8f9fa;
+    background-color: transparent;
+    background-image: none;
+    border-color: #f8f9fa;
+}
+/*------------------*/
+
+/* Site Mater CSS*/
+/* Navbar CSS*/
+.user-section{
+    float:right;
+    color:white;
+    width:30%;
+}
+
+/*------------------*/
 /*------------------*/

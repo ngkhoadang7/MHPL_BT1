@@ -65,9 +65,30 @@ namespace Todolist
                         userInfo["name"] = result.name;
                         Response.Cookies.Add(userInfo);
 
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
-                            "alert('Đăng nhập thành công'); window.location='" +
-                            Request.ApplicationPath + "Job.aspx';", true);
+                        switch (result.type.ToString())
+                        {
+                            case "1":
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                                        "alert('Đăng nhập thành công'); window.location='" +
+                                        Request.ApplicationPath + "Admin/User.aspx';", true);
+                                }
+                                break;
+                            case "2":
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                                        "alert('Đăng nhập thành công'); window.location='" +
+                                        Request.ApplicationPath + "Manager/Job.aspx';", true);
+                                }
+                                break;
+                            case "3":
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
+                                        "alert('Đăng nhập thành công'); window.location='" +
+                                        Request.ApplicationPath + "Job.aspx';", true);
+                                }
+                                break;
+                        }
                     }
                     break;
             }
